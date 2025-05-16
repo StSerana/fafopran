@@ -78,13 +78,13 @@ th, td {
   float: left;
   font-size: 24px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
+  line-height: 50px;
+  height: 50px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 50px;
 }
 
 .board-row:after {
@@ -107,4 +107,25 @@ th, td {
 
 .game-list {
   list-style-type: none;
+}
+
+.orange {
+  background-color: #ffd699;
+}
+
+.green {
+  background-color: #99ff99;
+}
+
+.answerGame{
+  font-size: medium;
+}
+
+[game-hint]:hover::after {
+  display: block;
+  position: absolute;
+  content: attr(game-hint);
+  border: 1px solid black;
+  background: #eee;
+  padding: .25em;
 }
