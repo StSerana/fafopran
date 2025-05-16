@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: fafopran
+  r2dbc:
+    name: fafopran
+    username: serana
+    url: r2dbc:postgresql:failover://${postgres.host}:${postgres.port},
+  liquibase:
+    change-log: db/changelog/master-changelog.xml
+    default-schema: public
+    url: jdbc:postgresql://${postgres.host}:${postgres.port}/fafopran
+    user: ${postgres.user}
+    liquibase-schema: public
+    password: ${postgres.password}
+
+
+logging:
+  level:
+    liquibase: INFO

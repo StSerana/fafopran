@@ -1,0 +1,25 @@
+### Get tasks
+GET http://localhost:8080/tasks
+
+###
+POST http://localhost:8080/api/capture-the-flag
+Content-Type: application/json
+#Authorization: Basic dGVzdDp0ZXN0
+#Cookie: SESSION=e42676fc-0ba1-4150-8879-76918949db40
+
+{
+  "flag": "flag-{U1RFR0FOTw==10qwerty}"
+}
+
+###
+POST http://localhost:8080/public/login
+Content-Type: application/json
+#Authorization: Basic dGVzdDp0ZXN0
+Authorization: Basic dGVzdDp0ZXN0
+
+###
+GET http://localhost:8080/public/login/isAuthenticated
+Content-Type: application/json
+//Cookie: SESSION=8b71e456-d763-4526-9e13-dba36039aede; Path=/; HTTPOnly; SameSite=Strict
+#Authorization: Basic dGVzdDp0ZXN0
+#Authorization: Basic dGVzdDp0ZXN0
