@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import '../../../App.css'
+import './game.css';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -24,20 +24,15 @@ function Board({squares, onPlay}) {
         [26, {text: "EE", color: "orange"}], [30, {text: "DS", color: "orange"}]])
 
     function handleClick(i: number) {
-        // if (calculateWinner(squares) || squares[i]) {
-        //     return;
-        // }
+
         if (gameOver(squares) == 'X' || squares[i]) {
             return;
         }
         const nextSquares = squares.slice();
-        // if (xIsNext) {
-        //     nextSquares[i] = 'X';
-        // } else {
-        //     nextSquares[i] = 'O';
-        // }
+
         if (answerArray.has(i)) {
-            nextSquares[i] = <div className={answerArray.get(i)!.color + " " + "answerGame"}>{answerArray.get(i)!.text}</div>
+            nextSquares[i] =
+                <div className={answerArray.get(i)!.color + " " + "answerGame"}>{answerArray.get(i)!.text}</div>
         } else {
             nextSquares[i] = 'X';
         }
@@ -75,15 +70,14 @@ function Board({squares, onPlay}) {
 
     return (
         <>
-            <div>
-                {createMap(7, 5)}
-            </div>
             <div className="status">{status}</div>
+            <br/>
+            {createMap(7, 5)}
         </>
     );
 }
 
-export default function Game() {
+export default function GameTask() {
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
     //const xIsNext = currentMove % 2 === 0;
@@ -100,39 +94,19 @@ export default function Game() {
         setCurrentMove(nextMove);
     }
 
-    // const moves = history.map((squares, move) => {
-    //     let description;
-    //     if (move > 0) {
-    //         description = 'Go to move #' + move;
-    //     } else {
-    //         description = 'Go to game start';
-    //     }
-    //     return (
-    //         <li key={move}>
-    //             <button onClick={() => jumpTo(move)}>{description}</button>
-    //         </li>
-    //     );
-    // });
-
     return (
         <div className="game">
             <div className="game-board">
                 <Board squares={currentSquares} onPlay={handlePlay}/>
             </div>
             <div className="game-info">
-                <ul className="game-list">
-                    <li key="move-0">
-                        <button onClick={() => jumpTo(0)}>Начать заново</button>
-                    </li>
+                <div className="game-button">
+                    <button onClick={() => jumpTo(0)}>Начать заново</button>
+                </div>
+                <div game-hint="not 2, 6, 14, 20, 28..." className="game-hint">
+                    Подсказка:
                     <br/>
-                    <br/>
-                    <br/>
-                    <li>
-                        <div game-hint="not 2, 6, 14, 20, 28...">
-                            Подсказка
-                        </div>
-                    </li>
-                </ul>
+                </div>
             </div>
         </div>
     );
@@ -148,5 +122,5 @@ function gameOver(squares: string[]): string {
             counter++
         }
     }
-    return counter == 10 ? 'flag-{R0FNRQ==10' : ''
+    return counter == 10 ? 'flag-{R0FNRQ==12' : ''
 }

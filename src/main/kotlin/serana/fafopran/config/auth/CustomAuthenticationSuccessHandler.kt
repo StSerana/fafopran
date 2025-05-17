@@ -10,7 +10,8 @@ import reactor.kotlin.core.publisher.toMono
 class CustomAuthenticationSuccessHandler : ServerAuthenticationSuccessHandler {
 
     private val SECRET_COOKIE_NAME = "secret"
-    private val SECRET_COOKIE_VALUE = "MDExMTEwMTEgMDAxMDAwMTAgMDExMDEwMDEgMDExMTAwMTEgMDEwMTExMTEgMDExMDAwMDEgMDExMDAxMDAgMDExMDExMDEgMDExMDEwMDEgMDExMDExMTAgMDAxMDAwMTAgMDAxMTEwMTAgMDAxMDAwMTAgMDEwMDAxMTAgMDExMDAwMDEgMDExMDExMDAgMDExMTAwMTEgMDExMDAxMDEgMDAxMDAwMTAgMDExMTExMDE="
+    private val SECRET_COOKIE_VALUE =
+        "MDExMTEwMTEgMDAxMDAwMTAgMDExMDEwMDEgMDExMTAwMTEgMDEwMTExMTEgMDExMDAwMDEgMDExMDAxMDAgMDExMDExMDEgMDExMDEwMDEgMDExMDExMTAgMDAxMDAwMTAgMDAxMTEwMTAgMDAxMDAwMTAgMDEwMDAxMTAgMDExMDAwMDEgMDExMDExMDAgMDExMTAwMTEgMDExMDAxMDEgMDAxMDAwMTAgMDExMTExMDE="
 
     override fun onAuthenticationSuccess(
         webFilterExchange: WebFilterExchange?,
@@ -18,12 +19,14 @@ class CustomAuthenticationSuccessHandler : ServerAuthenticationSuccessHandler {
     ): Mono<Void> {
         return webFilterExchange.toMono()
             .flatMap {
-                val cookie = ResponseCookie.from(SECRET_COOKIE_NAME, SECRET_COOKIE_VALUE)
-                    .path("/")
-                    .sameSite("Strict")
-                    .build()
+                if (it.exchange.request.cookies.getFirst(SECRET_COOKIE_NAME) == null) {
+                    val cookie = ResponseCookie.from(SECRET_COOKIE_NAME, SECRET_COOKIE_VALUE)
+                        .path("/")
+                        .sameSite("Strict")
+                        .build()
 
-                it.exchange.response.addCookie(cookie)
+                    it.exchange.response.addCookie(cookie)
+                }
                 return@flatMap Mono.empty<Void>()
             }
             .then()

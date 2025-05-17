@@ -2,10 +2,7 @@ package serana.fafopran.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseCookie.ResponseCookieBuilder
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.authorization.AuthorizationDecision
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
@@ -17,14 +14,10 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 import org.springframework.security.web.server.authentication.DelegatingServerAuthenticationSuccessHandler
 import org.springframework.security.web.server.authentication.WebFilterChainServerAuthenticationSuccessHandler
-import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher
-import org.springframework.util.StringUtils
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
-import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.session.WebSessionIdResolver
-import reactor.kotlin.core.publisher.toMono
 import serana.fafopran.config.auth.*
 import serana.fafopran.domain.auth.SessionRepository
 
@@ -33,7 +26,7 @@ import serana.fafopran.domain.auth.SessionRepository
 @EnableWebFluxSecurity
 class WebSecurityConfiguration(
     var userDetailsService: ReactiveUserDetailsService,
-    val sessionRepository: SessionRepository
+    val sessionRepository: SessionRepository,
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -94,7 +87,7 @@ class WebSecurityConfiguration(
         http: ServerHttpSecurity,
     ): SecurityWebFilterChain {
         http
-            .cors{}
+            .cors {}
             .httpBasic { it.disable() }
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .csrf { c -> c.disable() }
@@ -102,6 +95,7 @@ class WebSecurityConfiguration(
             .authorizeExchange { exchanges: AuthorizeExchangeSpec ->
                 exchanges
                     .pathMatchers("/public/**").permitAll()
+                    //.pathMatchers("api/admin/**").hasRole("ADMIN")
                     .pathMatchers("/api/**").authenticated()
                     .anyExchange().authenticated()
             }

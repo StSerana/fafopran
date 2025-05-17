@@ -14,12 +14,12 @@ Content-Type: application/json
 ###
 POST http://localhost:8080/public/login
 Content-Type: application/json
-#Authorization: Basic dGVzdDp0ZXN0
 Authorization: Basic dGVzdDp0ZXN0
 
 ###
 GET http://localhost:8080/public/login/isAuthenticated
 Content-Type: application/json
-//Cookie: SESSION=8b71e456-d763-4526-9e13-dba36039aede; Path=/; HTTPOnly; SameSite=Strict
-#Authorization: Basic dGVzdDp0ZXN0
-#Authorization: Basic dGVzdDp0ZXN0
+
+###
+POST http://localhost:8080/api/admin/admintask
+Content-Type: application/json

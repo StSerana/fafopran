@@ -1,0 +1,30 @@
+.is-frame {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background-image: url('../../../assets/Empty-frame.png');
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+}
+
+.in-frame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 660px;
+    height: 440px;
+
+    background-color: white !important;
+
+    display: block;
+    margin: auto;
+}
+
+.is-image {
+    width: auto;
+    height: inherit;
+}

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import serana.fafopran.domain.statistics.UserFlag.Flag
+import serana.fafopran.domain.task.ConditionType
 import java.nio.charset.Charset
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -21,7 +22,7 @@ class UserFlagDeserializer : JsonDeserializer<Flag>() {
             throw JsonParseException("Invalid flag pattern")
         }
         val (type, task, answer) = result.destructured
-        val taskType = TaskType.valueOf(String(Base64.decode(type), Charset.forName("UTF-8")))
+        val taskType = ConditionType.valueOf(String(Base64.decode(type), Charset.forName("UTF-8")))
         val t = task.toLong()
         return Flag(taskType, t, answer)
     }

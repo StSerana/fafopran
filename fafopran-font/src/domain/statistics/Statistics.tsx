@@ -1,5 +1,5 @@
 import {StatisticsManager, TaskScore, TeamInfo} from "./StatisticsManager.tsx";
-import '../../App.css'
+import './statistics.css'
 import {AnswerManager} from "./AnswerManager.tsx";
 import {useEffect, useState} from "react";
 import Instant from "ts-time/Instant";

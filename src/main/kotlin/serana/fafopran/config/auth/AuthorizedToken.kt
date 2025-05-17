@@ -27,8 +27,17 @@ class AuthorizedToken(
             mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
         )
 
-    constructor(principal: UUID?) : this(
-        principal,
+    constructor(uuid: UUID?, role: SimpleGrantedAuthority) : this(
+        uuid,
+        UserPrincipal(),
+        null,
+        Instant.now(),
+        Instant.now(),
+        mutableListOf(role)
+    )
+
+    constructor(uuid: UUID?) : this(
+        uuid,
         UserPrincipal(),
         null,
         Instant.now(),
@@ -36,13 +45,13 @@ class AuthorizedToken(
         mutableListOf()
     )
 
-    constructor(u: UserPrincipal?, s: UserSession) : this(
+    constructor(u: UserPrincipal?, s: UserSession, roles: MutableCollection<GrantedAuthority>) : this(
         s.id,
         u,
         s.username,
         s.createdAt,
         s.expiresAt,
-        mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
+        (mutableListOf(SimpleGrantedAuthority("ROLE_USER")) + roles).toMutableList()
     )
 
     override fun getCredentials(): Any {

@@ -6,7 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 import serana.fafopran.domain.auth.SessionRepository
 import serana.fafopran.domain.user.UserPrincipal
@@ -36,7 +35,7 @@ class CustomAuthenticationManager(
 
         }
 
-        return Mono.just(authentication);
+        return Mono.just(authentication)
     }
 
     private fun authenticateToken(authentication: AuthorizedToken): Mono<Authentication> {
@@ -44,7 +43,7 @@ class CustomAuthenticationManager(
             .flatMap<Authentication?> {
                 retrieveUser(it.username)
                     .flatMap { u ->
-                        val token = AuthorizedToken(u as UserPrincipal, it)
+                        val token = AuthorizedToken(u as UserPrincipal, it, authentication.authorities)
                         token.isAuthenticated = true
                         Mono.just(token)
                     }

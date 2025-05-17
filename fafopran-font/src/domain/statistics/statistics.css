@@ -1,0 +1,30 @@
+table {
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+.statistics {
+    width: 100%;
+    table-layout: fixed;
+    display: table
+}
+
+.not_solved {
+    background-color: #ff6666;
+}
+
+.not_solved_yet {
+    background-color: #ffd699;
+}
+
+.solved {
+    background-color: #99ff99;
+}
+
+.statistics_time {
+    font-size: x-small;
+}

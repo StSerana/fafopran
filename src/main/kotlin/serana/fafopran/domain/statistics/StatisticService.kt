@@ -51,7 +51,7 @@ class StatisticService(
 
         return userPrincipal.map { user -> user.getTeamId() }
             .flatMap { teamId ->
-                taskRepository.findById(userFlag.flag.task)
+                taskRepository.findByIdAndConditionType(userFlag.flag.task, userFlag.flag.type)
                     .flatMap { task ->
                         val result = task.answer == userFlag.flag.answer
                         statisticsRepository.findByTeamAndTask(teamId, userFlag.flag.task)

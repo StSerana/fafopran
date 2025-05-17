@@ -1,8 +1,7 @@
 import axiosClient from "../../common/axiosClient.tsx";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 
-class Task {
+export class Task {
     constructor(id: number, name: string) {
         this.id = id
         this.name = name
@@ -12,7 +11,13 @@ class Task {
     conditionType: string = "";
     name: string = "";
     description: string = "";
-    attachments: string[] = []
+    attachments: TaskAttachment[] = []
+}
+
+export class TaskAttachment {
+    atype: string = "";
+    path: string = "";
+    context: object | undefined;
 }
 
 export const TaskManager = {
@@ -31,22 +36,7 @@ export const TaskManager = {
             ,
             []
         )
-
-        // mock
-        //const ts = [new Task(1, "First")]
-        return (
-            <>
-                <ul>
-                    {tasks.map((task => (
-                        <li>
-                            <div>
-                                <Link to={"/tasks/" + task.id} state={{taskId: task.id}}><h1>{task.name}</h1></Link>
-                            </div>
-                        </li>
-                    )))}
-                </ul>
-            </>
-        )
+        return tasks
     },
     GetTask: (taskId: number) => {
         const [task, setTask] = useState<Task>()
@@ -62,9 +52,6 @@ export const TaskManager = {
             ,
             [taskId]
         )
-        console.log("TaskId " + taskId)
-        // mock
-        //return new Task(1, "First")
         return task
     }
 }

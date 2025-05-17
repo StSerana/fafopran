@@ -4,6 +4,8 @@ enum class ConditionType {
     STEGANOGRAPHIC,
     CRYPTOGRAPHIC,
     FORENSICS,
-    WEB,
+    WEBT,
+    IMGR,
+    GAME,
     REVERSE//?
 }

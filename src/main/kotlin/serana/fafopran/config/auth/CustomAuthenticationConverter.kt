@@ -1,6 +1,8 @@
 package serana.fafopran.config.auth
 
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter
 import org.springframework.security.web.server.authentication.ServerHttpBasicAuthenticationConverter
 import org.springframework.web.server.ServerWebExchange
@@ -20,7 +22,16 @@ class CustomAuthenticationConverter(val sessionRepository: SessionRepository) : 
             if (sessionId != null) {
                 val uuid = UUID.fromString(sessionId.toString())
                 return@flatMap sessionRepository.findById(uuid)
-                    .flatMap { if (it.isValid()) AuthorizedToken(uuid).toMono() else Mono.empty<Authentication>() }
+                    .flatMap {
+                        if (it.isValid())
+                            adminCookie(exchange.request)
+                                .flatMap { a ->
+                                    if (a) AuthorizedToken(it.id, SimpleGrantedAuthority("ROLE_ADMIN")).toMono()
+                                    else
+                                        AuthorizedToken(it.id).toMono()
+                                }
+                        else Mono.empty<Authentication>()
+                    }
             }
             return@flatMap Mono.empty<Authentication>()
         }
@@ -33,5 +44,9 @@ class CustomAuthenticationConverter(val sessionRepository: SessionRepository) : 
                     }
                     .switchIfEmpty(Mono.empty())
             }
+    }
+
+    private fun adminCookie(request: ServerHttpRequest): Mono<Boolean> {
+        return false.toMono()
     }
 }
