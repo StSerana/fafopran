@@ -4,5 +4,6 @@ enum class AttachmentType {
     LINK,
     IMAGE,
     FILE,
-    ELEMENT
+    ELEMENT,
+    CONTEXT
 }

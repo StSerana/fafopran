@@ -25,7 +25,7 @@ export const TaskManager = {
 
         const [tasks, setTasks] = useState<Task[]>([])
         useEffect(() => {
-                axiosClient.get('/tasks')
+                axiosClient.get('/api/tasks')
                     .then(response => {
                         setTasks(response.data);
                     })
@@ -41,7 +41,7 @@ export const TaskManager = {
     GetTask: (taskId: number) => {
         const [task, setTask] = useState<Task>()
         useEffect(() => {
-                axiosClient.get('/tasks/' + taskId)
+                axiosClient.get('/api/tasks/' + taskId)
                     .then(response => {
                         setTask(response.data);
                     })

@@ -22,7 +22,7 @@ class CustomAuthenticationSuccessHandler : ServerAuthenticationSuccessHandler {
                 if (it.exchange.request.cookies.getFirst(SECRET_COOKIE_NAME) == null) {
                     val cookie = ResponseCookie.from(SECRET_COOKIE_NAME, SECRET_COOKIE_VALUE)
                         .path("/")
-                        .sameSite("Strict")
+                        .sameSite("Lax")
                         .build()
 
                     it.exchange.response.addCookie(cookie)

@@ -20,6 +20,6 @@ export class TaskScore {
 
 export const StatisticsManager = {
     GetStatistics: () => {
-        return axiosClient.get('/statistics')
+        return axiosClient.get('/api/statistics')
     }
 }

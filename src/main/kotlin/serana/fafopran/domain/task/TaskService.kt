@@ -18,7 +18,7 @@ class TaskService(
 
     @Transactional(readOnly = true)
     fun getAllTasks(): Flux<ShortTask> {
-        return taskRepository.findAll()
+        return taskRepository.findAllByOrderById()
             .map { ShortTask(it.id, it.name) }
     }
 

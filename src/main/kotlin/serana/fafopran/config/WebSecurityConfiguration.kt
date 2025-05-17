@@ -42,12 +42,14 @@ class WebSecurityConfiguration(
         config.applyPermitDefaultValues()
 
         config.allowCredentials = true
+        config.allowedOrigins = listOf("http://localhost:5173")
         config.allowedOriginPatterns = listOf("*")
         config.allowedHeaders = listOf("*")
         config.allowedMethods = listOf("*")
 
         val source = UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", config)
+            registerCorsConfiguration("/api/**", config)
         }
         return CorsWebFilter(source)
     }
@@ -63,7 +65,7 @@ class WebSecurityConfiguration(
         }
         resolver.addCookieInitializer { builder: ResponseCookieBuilder ->
             builder.sameSite(
-                "Strict"
+                "Lax"
             )
         }
 
@@ -87,7 +89,7 @@ class WebSecurityConfiguration(
         http: ServerHttpSecurity,
     ): SecurityWebFilterChain {
         http
-            .cors {}
+//            .cors {}
             .httpBasic { it.disable() }
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .csrf { c -> c.disable() }
@@ -95,7 +97,6 @@ class WebSecurityConfiguration(
             .authorizeExchange { exchanges: AuthorizeExchangeSpec ->
                 exchanges
                     .pathMatchers("/public/**").permitAll()
-                    //.pathMatchers("api/admin/**").hasRole("ADMIN")
                     .pathMatchers("/api/**").authenticated()
                     .anyExchange().authenticated()
             }

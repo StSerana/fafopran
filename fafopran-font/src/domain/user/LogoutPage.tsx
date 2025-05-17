@@ -9,13 +9,7 @@ function Logout() {
 
     useEffect(() => {
 
-        axiosClient.post('/logout', null,{
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                withCredentials: true
-            }
-        )
+        axiosClient.post('/logout')
             .then(response => {
                 console.log(response)
             })

@@ -1,10 +1,10 @@
 import {StatisticsManager, TaskScore, TeamInfo} from "./StatisticsManager.tsx";
 import './statistics.css'
-import {AnswerManager} from "./AnswerManager.tsx";
 import {useEffect, useState} from "react";
 import Instant from "ts-time/Instant";
 import TimeFormatter from "ts-time-format/TimeFormatter";
 import {UTC} from "ts-time/Zone";
+import FlagPage from "./FlagPage.tsx";
 
 
 function firstRow(numrows: number) {
@@ -51,7 +51,7 @@ function BuildStatistics() {
 
     return (
         <>
-            <div>{AnswerManager.SendAnswer()}</div>
+            <FlagPage/>
             <div className="statistics">
                 <h1>Статистика</h1>
 

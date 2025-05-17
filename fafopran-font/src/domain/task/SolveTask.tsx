@@ -13,6 +13,32 @@ function resolveAttachments(attachments: TaskAttachment[] | undefined) {
                 case 'ELEMENT': {
                     const c = Components.get(e.path)
                     result.push(<>{c}</>)
+                    break
+                }
+                case 'IMAGE': {
+                    result.push(<>
+                        <img src={e.path} alt="Какая-то картинка"/>
+                    </>)
+                    break
+                }
+                case 'FILE': {
+                    result.push(<>
+                        тут лежит файл (потому что так было проще) -&gt;
+                        <a href={e.path}>link</a>
+                    </>)
+                    break
+                }
+                case 'LINK': {
+                    result.push(<>
+                        <a href={e.path}>
+                            Перейти по ссылке
+                        </a>
+                    </>)
+                    break
+                }
+                case 'CONTEXT': {
+                    result.push(<></>)
+                    break
                 }
             }
         })

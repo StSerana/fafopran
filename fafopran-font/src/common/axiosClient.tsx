@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
     //     delete headers.common['Authorization'];
     //     return data;
     // }
+
 });
 
 // Alter defaults after instance has been created
