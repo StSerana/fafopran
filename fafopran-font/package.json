@@ -1,6 +1,7 @@
 {
   "name": "fafopran-font",
   "private": true,
+  "homepage": "https://stserana.github.io/fafopran/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,12 +10,14 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "install": "npm install --global serve",
-    "serve": "serve"
+    "serve": "serve",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "axios": "^1.9.0",
     "react-router-dom": "^7.5.3",
     "ts-time": "^0.2.1",
     "ts-time-format": "^0.2.1"
@@ -27,6 +30,7 @@
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
     "globals": "^16.0.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
