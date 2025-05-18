@@ -1,5 +1,6 @@
 package serana.fafopran.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.ResponseCookie.ResponseCookieBuilder
@@ -33,7 +34,7 @@ class WebSecurityConfiguration(
         return PasswordEncoderFactories.createDelegatingPasswordEncoder()
     }
 
-    fun corsFilter(): CorsConfigurationSource {
+    fun corsFilter(origins: List<String>): CorsConfigurationSource {
 
         val config = CorsConfiguration()
 
@@ -41,31 +42,27 @@ class WebSecurityConfiguration(
         config.applyPermitDefaultValues()
 
         config.allowCredentials = true
-        config.allowedOrigins = listOf("http://localhost:5173", "https://stserana.github.io")
+        config.allowedOrigins = origins
         config.allowedOriginPatterns = listOf("*")
         config.allowedHeaders = listOf("*")
         config.allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
 
         val source = UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", config)
-            registerCorsConfiguration("/api/**", config)
         }
         return source
     }
 
     @Bean
-    fun webSessionIdResolver(): WebSessionIdResolver {
+    fun webSessionIdResolver(@Value("\${fafopran.cors.same-site}") sameSite: String): WebSessionIdResolver {
         val resolver = CustomCookieResolver()
         resolver.cookieName = "SESSION"
         resolver.addCookieInitializer { builder: ResponseCookieBuilder ->
             builder.path(
                 "/"
             )
-        }
-        resolver.addCookieInitializer { builder: ResponseCookieBuilder ->
-            builder.sameSite(
-                "Lax"
-            )
+                .secure(true)
+                .sameSite(sameSite)
         }
 
         return resolver
@@ -86,9 +83,11 @@ class WebSecurityConfiguration(
     @Bean
     fun springSecurityFilterChain(
         http: ServerHttpSecurity,
+        @Value("\${fafopran.cors.origins}")
+        origins: List<String>,
     ): SecurityWebFilterChain {
         http
-            .cors { it.configurationSource(corsFilter()) }
+            .cors { it.configurationSource(corsFilter(origins)) }
             .httpBasic { it.disable() }
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .csrf { c -> c.disable() }
