@@ -7,10 +7,6 @@ const axiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
     withCredentials: true,
-    // transformRequest: (data, headers) => {
-    //     delete headers.common['Authorization'];
-    //     return data;
-    // }
 
 });
 

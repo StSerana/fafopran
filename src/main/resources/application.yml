@@ -3,8 +3,9 @@ spring:
     name: fafopran
   r2dbc:
     name: fafopran
-    username: serana
+    username: ${postgres.user}
     url: r2dbc:postgresql:failover://${postgres.host}:${postgres.port},
+    password: ${postgres.password}
   liquibase:
     change-log: db/changelog/master-changelog.xml
     default-schema: public
