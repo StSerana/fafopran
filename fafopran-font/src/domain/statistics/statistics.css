@@ -1,3 +1,7 @@
+.div-flag {
+
+}
+
 table {
     width: 100%;
 }
@@ -15,6 +19,8 @@ th, td {
 
 .not_solved {
     background-color: #ff6666;
+    color: #ffffff;
+    border-color: #000000;
 }
 
 .not_solved_yet {
@@ -27,4 +33,14 @@ th, td {
 
 .statistics_time {
     font-size: x-small;
+}
+
+.statistics_head {
+    padding: 10px;
+    /*writing-mode: vertical-rl;*/
+    /*text-orientation: sideways;*/
+}
+
+.statistics_head_text {
+    /*transform: rotate(-15deg);*/
 }

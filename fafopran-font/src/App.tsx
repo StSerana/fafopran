@@ -1,5 +1,5 @@
 import './App.css'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import {Main} from './domain/Main.tsx'
 import {Tasks} from "./domain/task/Tasks.tsx";
 import {Statistics} from "./domain/statistics/Statistics.tsx";
@@ -17,7 +17,7 @@ function App() {
 
     return (
         <>
-            <BrowserRouter>
+            <HashRouter>
                 <AuthProvider>
                     <Routes>
                         <Route path="login" element={<Login/>}/>
@@ -33,7 +33,7 @@ function App() {
                         </Route>
                     </Routes>
                 </AuthProvider>
-            </BrowserRouter>
+            </HashRouter>
 
         </>
     )

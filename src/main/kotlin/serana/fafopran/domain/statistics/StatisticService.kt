@@ -8,8 +8,8 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import reactor.kotlin.core.publisher.toMono
+import serana.fafopran.adapter.web.advice.FlagException
 import serana.fafopran.domain.task.TaskRepository
-import serana.fafopran.domain.team.Team
 import serana.fafopran.domain.team.TeamRepository
 import serana.fafopran.domain.user.UserPrincipal
 import java.time.Instant
@@ -27,21 +27,24 @@ class StatisticService(
 
     @Transactional(readOnly = true)
     fun loadStatistics(): Flux<TeamInfo> {
-        val all: Flux<Pair<Long, TaskScore>> = statisticsRepository.findAll().flatMap { s ->
-            s.toMono().map { it.teamId to TaskScore(it.taskId, it.attemptsCount, it.solved, it.lastAnswer) }
-        }
-        val teams: Flux<Team> = teamRepository.findAll()
-
-        return teams
-            .publishOn(Schedulers.boundedElastic())
-            .map {
-                TeamInfo(
-                    it.name,
-                    all
-                        .filter { p -> p.first == it.id }
-                        .collectMap({ k -> k.first }, { k -> k.second })
-                        .block()
-                )
+        return teamRepository.findAll()
+            .collectMap { it.id }
+            .flatMapMany { teamMap ->
+                statisticsRepository.findAll().groupBy { it.teamId }
+                    .publishOn(Schedulers.boundedElastic())
+                    .map { g ->
+                        TeamInfo(g.key(), teamMap[g.key()]!!.name,
+                            g.map { score ->
+                                TaskScore(
+                                    score.taskId,
+                                    score.attemptsCount,
+                                    score.solved,
+                                    score.lastAnswer
+                                )
+                            }
+                                .collectMap { k -> k.id }
+                                .blockOptional().orElseGet { null })
+                    }
             }
     }
 
@@ -57,13 +60,17 @@ class StatisticService(
                         statisticsRepository.findByTeamAndTask(teamId, userFlag.flag.task)
                             .log()
                             .flatMap { found ->
-                                statisticsRepository.updateStatistics(
-                                    result,
-                                    found.teamId,
-                                    found.taskId,
-                                    Instant.now()
-                                )
-                                    .map { FlagResponse(result) }
+                                if (found.solved) {
+                                    Mono.error(FlagException.alreadySolved())
+                                } else {
+                                    statisticsRepository.updateStatistics(
+                                        result,
+                                        found.teamId,
+                                        found.taskId,
+                                        Instant.now()
+                                    )
+                                        .map { FlagResponse(result) }
+                                }
                             }
                             .switchIfEmpty(
                                 statisticsRepository.save(
@@ -85,6 +92,7 @@ class StatisticService(
     }
 
     data class TeamInfo(
+        val id: Long,
         val name: String,
         val score: Map<Long, TaskScore>?,
     )

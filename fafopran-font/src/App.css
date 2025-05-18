@@ -53,6 +53,15 @@ div {
     color: #888;
 }
 
+.main-menu-button {
+    width: 30%;
+    height: 10%;
+    font-size: 3vw;
+    font-weight: 100;
+    font-style: italic;
+    line-height: inherit;
+}
+
 .attachments {
     margin-top: 5%;
     border: 1px solid gray;

@@ -1,13 +1,14 @@
 import axiosClient from "../../common/axiosClient.tsx";
 
-export interface TeamInfo {
-    name: string
-    score: Map<string, TaskScore>
+export class TeamInfo {
+    id: number = 0;
+    name: string = '';
+    score: Map<string, TaskScore> = new Map<string, TaskScore>();
 }
 
 export class TaskScore {
-    constructor(number: number, b: boolean, time: string | null) {
-        this.attempts = number
+    constructor(attempts: number, b: boolean, time: string | null) {
+        this.attempts = attempts
         this.solved = b
         this.lastAttempt = time
     }

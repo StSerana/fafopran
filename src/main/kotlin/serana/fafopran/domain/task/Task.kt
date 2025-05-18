@@ -11,5 +11,6 @@ data class Task(
     val name: String,
     val description: String?,
     val answer: String,
+    val weight: Int,
 ) {
 }

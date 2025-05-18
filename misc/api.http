@@ -1,6 +1,9 @@
 ### Get tasks
 GET http://localhost:8080/api/tasks
 
+### Get tasks
+GET http://localhost:8080/api/statistics
+
 ###
 POST http://localhost:8080/api/capture-the-flag
 Content-Type: application/json

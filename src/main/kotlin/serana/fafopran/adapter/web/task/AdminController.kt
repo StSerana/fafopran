@@ -17,7 +17,7 @@ class AdminController {
 
     @PostMapping("/admintask")
     fun adminTask(@CookieValue("secret") cookieValue: String?): Mono<TaskResolution> {
-        val isAccepted = URLDecoder.decode(cookieValue, "UTF-8") == SECRET_VALUE
+        val isAccepted = cookieValue != null && URLDecoder.decode(cookieValue, "UTF-8") == SECRET_VALUE
         if (isAccepted) return Mono.just(TaskResolution("V0VCVA==11SVNBRE1JTlVOTE9DS0VE"))
         return Mono.just(TaskResolution("You must be admin!"))
     }

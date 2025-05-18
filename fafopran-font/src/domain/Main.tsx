@@ -1,18 +1,10 @@
-import reactLogo from '../assets/react.svg'
 import {Link} from "react-router-dom";
+import '../App.css'
 
-//import viteLogo from '../vite.svg'
-
-function MyButton() {
-    return (
-        <button>I'm a button</button>
-    );
-}
-
-function Links() {
+function Statistics() {
     return (
         <Link to="/statistics">
-            <button>Статистика</button>
+            <button className="main-menu-button">Статистика</button>
         </Link>
     )
 }
@@ -20,7 +12,7 @@ function Links() {
 function Tasks() {
     return (
         <Link to="/tasks">
-            <button>Задания</button>
+            <button className="main-menu-button">Задания</button>
         </Link>
     )
 }
@@ -29,20 +21,13 @@ function BuildMain() {
     return (
         <>
             <div>
-                <h1>Welcome to my app</h1>
-                <MyButton/>
-                <br/>
-                <Links/>
+                <h1>Добро пожаловать!</h1>
                 <br/>
                 <Tasks/>
+                <br/>
+                <br/>
+                <Statistics/>
             </div>
-
-            <div>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
-            </div>
-            <h1>Vite + React</h1>
         </>
     )
 }

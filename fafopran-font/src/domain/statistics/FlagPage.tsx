@@ -1,5 +1,6 @@
 import axiosClient from "../../common/axiosClient.tsx";
 import {useState} from "react";
+import './statistics.css'
 
 function createFlag(userFlag: string): string {
     return "flag-" + userFlag
@@ -7,34 +8,37 @@ function createFlag(userFlag: string): string {
 
 const FlagPage = () => {
 
-    let flag = ''
-    const [response, setResponse] = useState('')
+    const [response, setResponse] = useState('Еще не сдано')
 
-    const handleSubmit = (event: { preventDefault: () => void; }) => {
-        event.preventDefault()
-        {
-            axiosClient.post('/api/capture-the-flag', JSON.stringify({flag: createFlag(flag)}))
-                .then(res => {
-                    console.log(res)
-                    setResponse(res.data.isSuccess)
-                })
-                .catch(error => {
-                    console.error("Error: " + error);
-                });
-        }
+    const [flags, setFlags] = useState('{}')
+
+    const handleSubmit = () => {
+        // event.preventDefault()
+        axiosClient.post('/api/capture-the-flag', JSON.stringify({flag: createFlag(flags)}))
+            .then(res => {
+                console.log(res)
+                setResponse(res.data.isSuccess ? 'Все получилось!' : 'Где-то неправильно')
+            })
+            .catch(error => {
+                console.error("Error: " + error);
+                if (error.response.status == 400) {
+                    setResponse(error.response.data.message)
+                }
+            });
+        setFlags('{}')
     }
 
-    return(<>
-        <h1>Сдать флаг</h1>
+    return (<div className="div-flag">
+        <h2>Сдать флаг</h2>
         <form onSubmit={handleSubmit}>
             <label>flag-</label>
-            <input type="text" id="flag" name="flag" defaultValue="{}"
-                   onChange={e => flag = e.target.value}></input>
+            <input type="text" id="flag" name="flag" value={flags}
+                   onChange={e => setFlags(e.target.value)}></input>
             <input type="submit" value="Submit"/>
         </form>
-        Результат сдачи: {response}
         <br/>
-    </>)
+        Результат сдачи: {response}
+    </div>)
 }
 
 export default FlagPage

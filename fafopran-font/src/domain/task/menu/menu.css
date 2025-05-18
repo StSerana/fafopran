@@ -62,7 +62,7 @@ main::before {
     --offset: 20vw;
     --move-initial: calc(-25% + var(--offset));
     --move-final: calc(-50% + var(--offset));
-    --item-font-size: 5vw;
+    --item-font-size: 3vw;
 }
 
 .menu__item {

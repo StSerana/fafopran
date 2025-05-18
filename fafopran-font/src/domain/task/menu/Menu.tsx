@@ -29,6 +29,11 @@ export default function Menu({items}: MenuProps) {
                                     <span>{i.name}</span>
                                     <span>{i.name}</span>
                                     <span>{i.name}</span>
+                                    <span>{i.name}</span>
+                                    <span>{i.name}</span>
+                                    <span>{i.name}</span>
+                                    <span>{i.name}</span>
+                                    <span>{i.name}</span>
                                 </div>
                             </div>
                         </div>

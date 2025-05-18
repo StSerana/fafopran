@@ -12,6 +12,7 @@ export class Task {
     name: string = "";
     description: string = "";
     attachments: TaskAttachment[] = []
+    weight: number = 0
 }
 
 export class TaskAttachment {

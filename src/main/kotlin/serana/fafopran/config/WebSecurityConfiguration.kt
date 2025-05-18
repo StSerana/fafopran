@@ -15,7 +15,7 @@ import org.springframework.security.web.server.authentication.AuthenticationWebF
 import org.springframework.security.web.server.authentication.DelegatingServerAuthenticationSuccessHandler
 import org.springframework.security.web.server.authentication.WebFilterChainServerAuthenticationSuccessHandler
 import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.reactive.CorsWebFilter
+import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import org.springframework.web.server.session.WebSessionIdResolver
 import serana.fafopran.config.auth.*
@@ -33,8 +33,7 @@ class WebSecurityConfiguration(
         return PasswordEncoderFactories.createDelegatingPasswordEncoder()
     }
 
-    @Bean
-    fun corsFilter(): CorsWebFilter {
+    fun corsFilter(): CorsConfigurationSource {
 
         val config = CorsConfiguration()
 
@@ -42,16 +41,16 @@ class WebSecurityConfiguration(
         config.applyPermitDefaultValues()
 
         config.allowCredentials = true
-        config.allowedOrigins = listOf("http://localhost:5173")
+        config.allowedOrigins = listOf("http://localhost:5173", "https://stserana.github.io")
         config.allowedOriginPatterns = listOf("*")
         config.allowedHeaders = listOf("*")
-        config.allowedMethods = listOf("*")
+        config.allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
 
         val source = UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", config)
             registerCorsConfiguration("/api/**", config)
         }
-        return CorsWebFilter(source)
+        return source
     }
 
     @Bean
@@ -89,7 +88,7 @@ class WebSecurityConfiguration(
         http: ServerHttpSecurity,
     ): SecurityWebFilterChain {
         http
-//            .cors {}
+            .cors { it.configurationSource(corsFilter()) }
             .httpBasic { it.disable() }
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .csrf { c -> c.disable() }
